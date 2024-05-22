@@ -7,17 +7,6 @@ class Repo:
     up_stream: str
     down_stream: str
 
-class colors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
 
 #Reads in the folders and the source urls
 def read_config():
@@ -41,6 +30,8 @@ def update(repo):
     os.chdir(f"./{repo.name}")
     os.system(f"git pull --all")
     os.system("git push down --tags")
+    os.system("git push down")
+
     os.chdir("../")
 
 
@@ -49,6 +40,8 @@ def create(repo):
     os.chdir(f"./{repo.name}")
     os.system(f"git remote add down {repo.down_stream}")
     os.system("git push down --tags")
+    os.system("git push down")
+
     os.chdir("../")
 
 if __name__ == '__main__':
