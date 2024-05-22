@@ -29,6 +29,7 @@ def update(repo):
     os.chdir(f"./{repo.name}")
     os.system(f"git pull --all")
     os.system("git push down")
+    os.chdir("../")
 
 
 def create(repo):
@@ -36,6 +37,7 @@ def create(repo):
     os.chdir(f"./{repo.name}")
     os.system(f"git remote add down {repo.down_stream}")
     os.system("git push down")
+    os.chdir("../")
 
 if __name__ == '__main__':
     repos = read_config()
