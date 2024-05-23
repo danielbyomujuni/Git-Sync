@@ -33,19 +33,19 @@ def update(repo):
     os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\" &> /dev/null; done")
     os.system(f"git pull --all")
     os.system("git push down --tags")
-    os.system("git push down --all")
+    os.system("git push down --mirror")
     os.chdir("../")
 
 
 def create(repo):
-    os.system(f"git clone {repo.up_stream} ./{repo.name}")
+    os.system(f"git clone --bare {repo.up_stream} ./{repo.name}")
     os.chdir(f"./{repo.name}")
 
     os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\"; done")
     os.system(f"git pull --all")
     os.system(f"git remote add down {repo.down_stream}")
     os.system("git push down --tags")
-    os.system("git push down --all")
+    os.system("git push down --mirror")
     os.chdir("../")
 
 
