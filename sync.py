@@ -30,7 +30,7 @@ def update(repo):
     os.chdir(f"./{repo.name}")
 
     print("Verifying branches")
-    os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\"; done")
+    os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\" &> /dev/null; done")
     os.system(f"git pull --all")
     os.system("git push down --tags")
     os.system("git push down --all")
