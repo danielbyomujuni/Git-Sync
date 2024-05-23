@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import shutil
 import os
 
 @dataclass
@@ -26,27 +27,15 @@ def read_config():
     return repos
 
 
-def update(repo):
-    os.chdir(f"./{repo.name}")
-
-    print("Verifying branches")
-    #os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\" &> /dev/null; done")
-    #os.system("git pull origin")
-    os.system("git push down --tags")
-    os.system("git push --force --all down")
-    os.chdir("../")
-
-
 def create(repo):
     os.system(f"git clone --bare {repo.up_stream} ./{repo.name}")
     os.chdir(f"./{repo.name}")
-
-   # os.system("git branch -r | grep -v '\\->' | sed \"s,\\x1B\\[[0-9;]*[a-zA-Z],,g\" | grep -E origin/ | while read remote; do git branch --track \"${remote#origin/}\" \"origin${remote#origin}\"; done")
-    os.system(f"git pull origin")
     os.system(f"git remote add down {repo.down_stream}")
     os.system("git push down --tags")
-    os.system("git push --force --all down")
+    os.system("git push down --mirror")
     os.chdir("../")
+    shutil.rmtree(f"./{repo.name}")
+    
 
 
 if __name__ == '__main__':
@@ -58,5 +47,4 @@ if __name__ == '__main__':
             create(repo)
         else:
             print(f"\033[0;35mUPDATING LINK FOR: {repo.name}\033[0;37m")
-            update(repo)
-
+            shutil.rmtree(f"./{repo.name}")
